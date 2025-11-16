@@ -34,8 +34,6 @@ class AsyncScraper:
     def __init__(self, max_concurrent_requests: int = 100):
         self.max_concurrent_requests = max_concurrent_requests
         self.semaphore = asyncio.Semaphore(max_concurrent_requests)
-        
-        # Simulamos dados de concorrentes
         self.competitors = {
             "amazon": {
                 "url": "https://api.amazon.com/prices",
@@ -68,17 +66,7 @@ class AsyncScraper:
         """
         async with self.semaphore:
             try:
-                # Simulamos a requisição HTTP
-                await asyncio.sleep(random.uniform(0.1, 0.3))  # Simula latência
-                
-                # Em produção, seria uma requisição real:
-                # async with session.get(
-                #     f"{competitor_url}?sku={sku}",
-                #     timeout=aiohttp.ClientTimeout(total=5)
-                # ) as resp:
-                #     data = await resp.json()
-                
-                # Simulamos resposta
+                await asyncio.sleep(random.uniform(0.1, 0.3))
                 price = self._simulate_price(sku, competitor_id)
                 availability = random.choice([True, True, True, False])  # 75% disponível
                 
@@ -124,11 +112,7 @@ class AsyncScraper:
                     competitor["url"]
                 )
                 tasks.append(task)
-
-            # Executa todas as requisições em paralelo
             results = await asyncio.gather(*tasks, return_exceptions=False)
-
-        # Filtra None values (requisições falhadas)
         return [r for r in results if r is not None]
 
     async def scrape_prices_batch(
@@ -164,8 +148,6 @@ class AsyncScraper:
         }
         
         base = base_prices.get(sku, 100.00)
-        
-        # Adiciona variação por concorrente
         variations = {
             "amazon": base * random.uniform(0.95, 1.05),
             "ebay": base * random.uniform(0.90, 1.10),

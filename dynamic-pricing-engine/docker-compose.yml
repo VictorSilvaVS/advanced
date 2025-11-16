@@ -36,8 +36,8 @@ services:
     networks:
       - pricing_network
     healthcheck:
-      # Fallback TCP-based healthcheck (kafka helper scripts not present in some images)
-      test: ["CMD-SHELL", "bash -c 'cat < /dev/tcp/127.0.0.1/9092 >/dev/null 2>&1 && echo ok || exit 1'"]
+      # Use netcat to check broker TCP port (fast and available in this image)
+      test: ["CMD", "nc", "-z", "127.0.0.1", "9092"]
       interval: 10s
       timeout: 5s
       retries: 5

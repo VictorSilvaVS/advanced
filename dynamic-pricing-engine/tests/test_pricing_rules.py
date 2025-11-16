@@ -7,6 +7,14 @@ from src.rules_engine.engine import (
     PricingRulesEngine, 
     PriceContext,
     PricingRulesEngine
+"""
+Testes unitários para o Rules Engine
+Demonstra como testar a lógica de precificação
+"""
+import pytest
+from src.rules_engine.engine import (
+    PricingRulesEngine, 
+    PriceContext,
 )
 
 
@@ -244,4 +252,4 @@ class TestElasticitiyCalculation:
 
 
 if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+    pytest.main([__file__, "-v"]) 
