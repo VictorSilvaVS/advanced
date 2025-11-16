@@ -1,0 +1,265 @@
+{
+  "info": {
+    "_postman_id": "pricing-engine-v1",
+    "name": "Dynamic Pricing Engine API",
+    "description": "API Collection para Dynamic Pricing Engine",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Pricing API",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Get Price by SKU",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/price/SKU001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "price", "SKU001"]
+            }
+          }
+        },
+        {
+          "name": "Get Price with Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/price/SKU002?include_metrics=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "price", "SKU002"],
+              "query": [
+                {
+                  "key": "include_metrics",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Batch Prices",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skus\": [\"SKU001\", \"SKU002\", \"SKU003\", \"SKU004\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/prices/batch",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "prices", "batch"]
+            }
+          }
+        },
+        {
+          "name": "Get Service Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/metrics",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "metrics"]
+            }
+          }
+        },
+        {
+          "name": "Clear Cache (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cache/clear",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cache", "clear"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scraper Service",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8001/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8001",
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Scrape Single SKU",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"SKU001\",\n  \"competitor_ids\": [\"amazon\", \"ebay\", \"mercado_livre\", \"shopee\"]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8001/api/v1/scrape/single",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8001",
+              "path": ["api", "v1", "scrape", "single"]
+            }
+          }
+        },
+        {
+          "name": "Scrape Batch SKUs",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skus\": [\"SKU001\", \"SKU002\", \"SKU003\", \"SKU004\"],\n  \"competitor_ids\": [\"amazon\", \"ebay\"]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8001/api/v1/scrape/batch",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8001",
+              "path": ["api", "v1", "scrape", "batch"]
+            }
+          }
+        },
+        {
+          "name": "List Competitors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8001/api/v1/competitors",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8001",
+              "path": ["api", "v1", "competitors"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Audit Service",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8003/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8003",
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Get SKU Decision History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8003/api/v1/decisions/sku/SKU001?limit=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8003",
+              "path": ["api", "v1", "decisions", "sku", "SKU001"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Recent Failures",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8003/api/v1/failures?hours=24&limit=50",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8003",
+              "path": ["api", "v1", "failures"],
+              "query": [
+                {
+                  "key": "hours",
+                  "value": "24"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8003/api/v1/statistics",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8003",
+              "path": ["api", "v1", "statistics"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ]
+}
