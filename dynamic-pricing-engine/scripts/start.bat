@@ -18,6 +18,25 @@ if %ERRORLEVEL% NEQ 0 (
 
 echo OK - Docker encontrado
 echo.
+REM Aguarda o Docker Engine ficar pronto (evita erros ao conectar ao named pipe)
+echo Verificando se o Docker Engine esta ativo...
+set /a DOCKER_WAIT_COUNT=0
+:wait_for_docker
+docker info >nul 2>nul
+if %ERRORLEVEL% NEQ 0 (
+    if %DOCKER_WAIT_COUNT% GEQ 30 (
+        echo Erro: o Docker nao respondeu apos %DOCKER_WAIT_COUNT% tentativas.
+        echo Abra o Docker Desktop e tente novamente.
+        pause
+        exit /b 1
+    )
+    echo Aguardando Docker... tentativa %DOCKER_WAIT_COUNT%/30
+    timeout /t 2 /nobreak >nul
+    set /a DOCKER_WAIT_COUNT+=1
+    goto wait_for_docker
+)
+echo Docker Engine ativo.
+
 
 REM Limpar containers existentes se solicitado
 if "%1"=="clean" (

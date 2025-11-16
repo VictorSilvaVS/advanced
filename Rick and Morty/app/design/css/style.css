@@ -1,0 +1,477 @@
+/* ==================== RESET & BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0f0f1e 100%);
+    background-attachment: fixed;
+    color: #f2f2f2;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ==================== HEADER & NAVIGATION ==================== */
+header {
+    background: linear-gradient(90deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 26, 62, 0.95) 100%);
+    padding: 1.5rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid #97ce4c;
+    box-shadow: 0 8px 32px rgba(151, 206, 76, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: #97ce4c;
+    text-decoration: none;
+    font-family: 'Creepster', cursive;
+    font-size: 1.3rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    padding: 0.5rem 1rem;
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #97ce4c, #c6ff4d);
+    transition: width 0.4s ease;
+}
+
+nav a:hover {
+    color: #c6ff4d;
+    text-shadow: 0 0 10px rgba(198, 255, 77, 0.8);
+}
+
+nav a:hover::before {
+    width: 100%;
+}
+
+/* ==================== MAIN CONTAINER ==================== */
+main {
+    min-height: calc(100vh - 200px);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+/* ==================== HERO SECTION ==================== */
+.hero {
+    text-align: center;
+    padding: 3rem 0;
+    animation: fadeInDown 0.8s ease;
+}
+
+.hero h1 {
+    font-family: 'Creepster', cursive;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    color: #97ce4c;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 30px rgba(151, 206, 76, 0.6);
+    letter-spacing: 3px;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    color: #b8b8d1;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-gif {
+    max-width: 300px;
+    margin-top: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 40px rgba(151, 206, 76, 0.4);
+    animation: floatUp 3s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==================== CARDS ==================== */
+h2 {
+    font-family: 'Creepster', cursive;
+    font-size: 3rem;
+    color: #97ce4c;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(151, 206, 76, 0.5);
+    letter-spacing: 2px;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    animation: fadeIn 0.8s ease 0.2s both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.card {
+    background: linear-gradient(135deg, rgba(38, 38, 38, 0.8) 0%, rgba(50, 50, 70, 0.8) 100%);
+    border: 2px solid #97ce4c;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(151, 206, 76, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: 2;
+}
+
+.card:hover::before {
+    left: 100%;
+}
+
+.card:hover {
+    transform: translateY(-15px) scale(1.03);
+    box-shadow: 0 20px 50px rgba(151, 206, 76, 0.3);
+    border-color: #c6ff4d;
+}
+
+.card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.card:hover img {
+    transform: scale(1.1) rotate(2deg);
+}
+
+.card-body {
+    padding: 1.5rem;
+    background: rgba(26, 26, 38, 0.9);
+}
+
+.card-body h5 {
+    font-family: 'Creepster', cursive;
+    font-size: 1.5rem;
+    color: #c6ff4d;
+    margin: 0 0 1rem 0;
+}
+
+.card-body p {
+    font-size: 0.95rem;
+    color: #b8b8d1;
+    margin: 0.5rem 0;
+    line-height: 1.5;
+}
+
+/* ==================== QUIZ ==================== */
+#quiz-form {
+    background: rgba(38, 38, 55, 0.6);
+    padding: 2.5rem;
+    border-radius: 12px;
+    border: 2px solid #97ce4c;
+    margin: 2rem auto;
+    max-width: 700px;
+}
+
+.question {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(151, 206, 76, 0.3);
+}
+
+.question:last-child {
+    border-bottom: none;
+}
+
+.question p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #c6ff4d;
+    font-weight: 500;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(26, 26, 38, 0.5);
+    border: 1px solid rgba(151, 206, 76, 0.5);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #f2f2f2;
+}
+
+.options label:hover {
+    background: rgba(151, 206, 76, 0.1);
+    border-color: #97ce4c;
+    transform: translateX(5px);
+}
+
+.options input[type="radio"] {
+    margin-right: 0.75rem;
+    cursor: pointer;
+    accent-color: #97ce4c;
+}
+
+#quiz-results {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(151, 206, 76, 0.1), rgba(198, 255, 77, 0.05));
+    border-left: 4px solid #97ce4c;
+    border-radius: 8px;
+    text-align: center;
+    animation: slideIn 0.5s ease;
+}
+
+#quiz-results h3 {
+    font-family: 'Creepster', cursive;
+    font-size: 1.8rem;
+    color: #c6ff4d;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ==================== LOGIN ==================== */
+.login-container {
+    max-width: 450px;
+    margin: 3rem auto;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(38, 38, 55, 0.8) 0%, rgba(50, 50, 70, 0.8) 100%);
+    border: 2px solid #97ce4c;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(151, 206, 76, 0.2);
+    animation: fadeIn 0.6s ease;
+}
+
+.login-container h2 {
+    font-family: 'Creepster', cursive;
+    font-size: 2.8rem;
+    color: #97ce4c;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px rgba(151, 206, 76, 0.5);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.7rem;
+    color: #c6ff4d;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background-color: rgba(26, 26, 38, 0.6);
+    border: 2px solid rgba(151, 206, 76, 0.5);
+    color: #f2f2f2;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    background-color: rgba(26, 26, 38, 0.9);
+    border-color: #97ce4c;
+    box-shadow: 0 0 15px rgba(151, 206, 76, 0.3);
+}
+
+.form-group input::placeholder {
+    color: rgba(242, 242, 242, 0.5);
+}
+
+/* ==================== BUTTONS ==================== */
+.btn {
+    background: linear-gradient(135deg, #97ce4c 0%, #c6ff4d 100%);
+    color: #0a0e27;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Creepster', cursive;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 25px rgba(151, 206, 76, 0.3);
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(151, 206, 76, 0.5);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+}
+
+/* ==================== LOADING & PORTAL ==================== */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000000 0%, #0a0e27 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 0.4s ease;
+}
+
+.loading-gif {
+    width: 250px;
+    filter: drop-shadow(0 0 20px rgba(151, 206, 76, 0.4));
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+#portal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.portal {
+    width: 250px;
+    height: 250px;
+    background-image: url('https://media.giphy.com/media/3o7aD2d7hy9ktXNDP2/giphy.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: spin 2s linear infinite, pulse 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(151, 206, 76, 0.6));
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    nav {
+        gap: 1rem;
+    }
+
+    nav a {
+        font-size: 1.1rem;
+    }
+
+    .container {
+        padding: 2rem 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .card-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    #quiz-form {
+        padding: 1.5rem;
+    }
+
+    .login-container {
+        padding: 2rem 1.5rem;
+        margin: 2rem 1rem;
+    }
+}

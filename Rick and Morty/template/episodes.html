@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>📺 Episódios da Série</h2>
+    <div class="card-container">
+        {% for episode in episodes %}
+        <div class="card" data-episode="{{ episode.name }}">
+            <div class="card-body" style="padding: 2rem;">
+                <h5>{{ episode.name }}</h5>
+                <p><strong>Código:</strong> {{ episode.episode }}</p>
+                <p><strong>Ao Ar:</strong> {{ episode.air_date }}</p>
+                <p><strong>Personagens:</strong> {{ episode.characters|length }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

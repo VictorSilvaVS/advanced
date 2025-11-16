@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>🧠 Teste seu Conhecimento</h2>
+    {% if characters %}
+    <form id="quiz-form">
+        {% for character in characters %}
+        <div class="question">
+            <p>❓ Qual é o status de <strong>{{ character.name }}</strong>?</p>
+            <div class="options">
+                <label>
+                    <input type="radio" name="q{{loop.index}}" value="Alive" required>
+                    <span>👽 Vivo</span>
+                </label>
+                <label>
+                    <input type="radio" name="q{{loop.index}}" value="Dead" required>
+                    <span>💀 Morto</span>
+                </label>
+                <label>
+                    <input type="radio" name="q{{loop.index}}" value="unknown" required>
+                    <span>❓ Desconhecido</span>
+                </label>
+            </div>
+            <input type="hidden" id="answer{{loop.index}}" value="{{ character.status }}">
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn">Verificar Respostas</button>
+    </form>
+    <div id="quiz-results"></div>
+    {% else %}
+    <p style="text-align: center; font-size: 1.2rem; color: #b8b8d1;">Não foi possível carregar o quiz. Tente novamente mais tarde.</p>
+    {% endif %}
+</div>
+
+<script>
+    document.getElementById('quiz-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let score = 0;
+        const totalQuestions = {{ characters|length }};
+        
+        for (let i = 1; i <= totalQuestions; i++) {
+            const answer = document.getElementById('answer' + i).value;
+            const selectedOption = document.querySelector('input[name="q' + i + '"]:checked');
+            
+            if (selectedOption && selectedOption.value === answer) {
+                score++;
+            }
+        }
+        
+        const percentage = Math.round((score / totalQuestions) * 100);
+        let message = '';
+        
+        if (percentage === 100) {
+            message = '🏆 PERFEITO! Você é um verdadeiro fã!';
+        } else if (percentage >= 80) {
+            message = '🎉 Excelente! Você sabe muito sobre Rick and Morty!';
+        } else if (percentage >= 60) {
+            message = '👍 Bom! Você tem conhecimento decente!';
+        } else if (percentage >= 40) {
+            message = '📚 Continue assistindo para melhorar!';
+        } else {
+            message = '🤔 Que tal maratonar a série e tentar novamente?';
+        }
+        
+        const resultsDiv = document.getElementById('quiz-results');
+        resultsDiv.innerHTML = `
+            <div style="text-align: center;">
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">${message}</h3>
+                <p style="font-size: 1.5rem; color: #c6ff4d;">Você acertou <strong>${score}</strong> de <strong>${totalQuestions}</strong> perguntas!</p>
+                <p style="font-size: 1.3rem; color: #97ce4c;">Pontuação: <strong>${percentage}%</strong></p>
+            </div>
+        `;
+    });
+</script>
+{% endblock %}
+

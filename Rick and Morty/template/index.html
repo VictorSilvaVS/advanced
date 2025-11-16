@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="hero">
+        <h1>🌌 Bem-vindo ao Arquivo de Memórias</h1>
+        <p>Explore personagens, episódios e teste seus conhecimentos sobre o multiverso de Rick and Morty</p>
+        <img src="https://media.tenor.com/lVEUKiDglIMAAAAC/rick-and-morty-rick.gif" alt="Rick Dance" class="hero-gif">
+        <div style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <a href="{{ url_for('characters') }}" class="btn" style="text-decoration: none; margin: 0;">🧬 Personagens</a>
+            <a href="{{ url_for('episodes') }}" class="btn" style="text-decoration: none; margin: 0;">📺 Episódios</a>
+            <a href="{{ url_for('quiz') }}" class="btn" style="text-decoration: none; margin: 0;">🧠 Quiz</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

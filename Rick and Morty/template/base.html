@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore personagens, episódios e teste seus conhecimentos sobre Rick and Morty">
+    <meta name="theme-color" content="#97ce4c">
+    <title>Rick and Morty - Arquivo de Memórias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='design/css/style.css') }}">
+</head>
+<body>
+    <div id="loading-overlay">
+        <img src="https://i.gifer.com/7V5.gif" alt="Carregando..." class="loading-gif">
+    </div>
+
+    <div id="portal-overlay">
+        <div class="portal"></div>
+    </div>
+
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}" class="nav-link">🏠 Home</a>
+            <a href="{{ url_for('characters') }}" class="nav-link">🧬 Personagens</a>
+            <a href="{{ url_for('episodes') }}" class="nav-link">📺 Episódios</a>
+            <a href="{{ url_for('quiz') }}" class="nav-link">🧠 Quiz</a>
+            <a href="{{ url_for('login') }}" class="nav-link">🔐 Login</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: #97ce4c; border-top: 1px solid rgba(151, 206, 76, 0.3); margin-top: 3rem;">
+        <p>🌌 Powered by Rick and Morty API | © 2024 Rick and Morty Archive</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script/js/main.js') }}"></script>
+</body>
+</html>
