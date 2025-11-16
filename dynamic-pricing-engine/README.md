@@ -665,6 +665,12 @@ Para dúvidas ou issues:
 
 ---
 
-**Desenvolvido como demonstração de arquitetura Python avançada para desenvolvedores sênior.**
+**Desenvolvido como demonstração de arquitetura Python avançada**
+
+
 
 Última atualização: Novembro 2025
+
+---
+
+desenvolvido por "victor silva"
