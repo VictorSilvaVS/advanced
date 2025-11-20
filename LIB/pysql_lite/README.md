@@ -308,7 +308,7 @@ MIT License - Veja LICENSE para detalhes
 
 ## 👨‍💻 Autor
 
-Desenvolvido como exemplo educacional de Mini-ORM
+Desenvolvido como exemplo educacional de Mini-ORM - by Victor Silva
 
 ## 🤝 Contribuições
 
