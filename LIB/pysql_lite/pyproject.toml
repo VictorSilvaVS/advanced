@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pysql_lite"
+version = "1.0.0"
+description = "Mini-ORM leve para SQLite sem SQL complexo"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Victor Silva", email = "victor@example.com"}
+]
+keywords = ["orm", "sqlite", "database", "lightweight"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/VictorSilvaVS/advanced"
+Repository = "https://github.com/VictorSilvaVS/advanced.git"
+Issues = "https://github.com/VictorSilvaVS/advanced/issues"
+
+[tool.setuptools]
+packages = ["pysql_lite"]

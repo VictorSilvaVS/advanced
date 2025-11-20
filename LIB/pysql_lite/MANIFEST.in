@@ -1,0 +1,13 @@
+# MANIFEST.in - Define arquivos adicionais para incluir na distribuição
+
+# Incluir todos os arquivos de documentação
+include README.md
+include CHANGELOG.md
+include LICENSE
+recursive-include docs *.md
+
+# Incluir exemplos
+recursive-include examples *.py
+
+# Incluir testes
+recursive-include tests *.py
