@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PGR - Programa de Gestão de Rotina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css">
+    <style>
+        /* (todo o CSS do template anterior, mantido igual) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .topbar {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 1.5rem;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            background: #1e3a5f;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .logo-text strong {
+            font-size: 1rem;
+            color: #1e3a5f;
+        }
+
+        .logo-text span {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid #e5e7eb;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #4b5563;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            border-color: #1e3a5f;
+            color: #1e3a5f;
+        }
+
+        .user-badge {
+            background: #eef2ff;
+            color: #1e3a5f;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-container {
+            margin: 1rem 0;
+        }
+
+        .tab-bar {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-item {
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #6b7280;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .tab-item:hover {
+            background: #eef2ff;
+            color: #1e3a5f;
+        }
+
+        .tab-item.active {
+            background: #1e3a5f;
+            color: white;
+        }
+
+        /* Premium Meeting Timer */
+        .timer-card {
+            background: rgba(30, 58, 95, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 100px;
+            display: inline-flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .timer-main-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-right: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .play-trigger {
+            background: #ffffff;
+            color: #1e3a5f;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.4rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-trigger:hover {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .timer-display {
+            font-size: 1.6rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            min-width: 140px;
+            text-align: center;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .time-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .time-group label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1px;
+        }
+
+        .time-group input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0;
+            width: 90px;
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .time-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .glass-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .card-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .period-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .period-btn {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .period-btn.active {
+            background: #1e3a5f;
+            color: white;
+            border-color: #1e3a5f;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1rem;
+            transition: all 0.2s;
+        }
+
+        .metric-card:hover {
+            border-color: #1e3a5f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1;
+        }
+
+        .metric-unit {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-left: 4px;
+        }
+
+        .metric-period {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            margin-top: 6px;
+        }
+
+        .date-squares {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .square {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .square:hover {
+            transform: scale(1.05);
+        }
+
+        .square.green {
+            background: #10b981;
+            color: white;
+        }
+
+        .square.red {
+            background: #ef4444;
+            color: white;
+        }
+
+        .square.gray {
+            background: #e5e7eb;
+        }
+
+        .square.future {
+            background: #d1d5db;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .presenca-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 1rem 0;
+        }
+
+        .presenca-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .presenca-avatar {
+            width: 32px;
+            height: 32px;
+            background: #1e3a5f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .presenca-name {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .presenca-select {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        .outliers-section {
+            margin-top: 1.5rem;
+        }
+
+        .outliers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .outliers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .outlier-item {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 0.75rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .outlier-check {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .outlier-info {
+            flex: 1;
+        }
+
+        .outlier-date {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #1f2937;
+        }
+
+        .outlier-value {
+            font-weight: 600;
+            color: #dc2626;
+            font-size: 0.75rem;
+            margin-top: 2px;
+        }
+
+        .outlier-range {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+
+        .btn-primary {
+            background: #1e3a5f;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #0f2b44;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow: auto;
+        }
+
+        .modal-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .modal-body {
+            padding: 1rem;
+        }
+
+        .modal-footer {
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .piap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .piap-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            border-left: 6px solid #1e3a5f;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .piap-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .piap-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .piap-card-title {
+            font-weight: 700;
+            color: #1e3a5f;
+            font-size: 1.1rem;
+        }
+
+        .piap-badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #1e3a5f;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .piap-card-body p {
+            font-size: 0.85rem;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .piap-card-body strong {
+            color: #1f2937;
+        }
+
+        .piap-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .action-table th, .action-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9rem;
+        }
+
+        .action-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* 5W2H & Ishikawa + Stepper Styles - PREMIUM OVERHAUL */
+        .modal.large {
+            max-width: 900px;
+            width: 95%;
+            max-height: 90vh; /* Permite scroll se necessário */
+            overflow-y: auto;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin: 1.5rem auto 3.5rem auto;
+            position: relative;
+            padding: 0 40px;
+            max-width: 800px;
+        }
+        .stepper-line {
+            position: absolute;
+            top: 24px;
+            left: 60px;
+            right: 60px;
+            height: 3px;
+            background: #f1f5f9;
+            z-index: 0;
+            border-radius: 4px;
+        }
+        .step-item {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100px;
+        }
+        .step-circle {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border: 3px solid #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #94a3b8;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .step-item.active .step-circle {
+            background: #1e3a5f;
+            border-color: #1e3a5f;
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(30, 58, 95, 0.3);
+        }
+        .step-item.completed .step-circle {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+        .step-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+        .step-item.active .step-label { color: #1e3a5f; }
+        .step-item.completed .step-label { color: #10b981; }
+        
+        .step-pane { display: none; }
+        .step-pane.active { 
+            display: block; 
+            animation: slideUpFade 0.5s ease-out; 
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header-mini {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #1e3a5f;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 5px solid #1e3a5f;
+        }
+
+        /* Modernized Form Fields */
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .field-group label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-left: 4px;
+        }
+        .field-group input, 
+        .field-group textarea {
+            width: 100%;
+            background: #ffffff;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #1e293b;
+            transition: all 0.3s;
+            line-height: 1.5;
+        }
+        .field-group input:focus, 
+        .field-group textarea:focus {
+            border-color: #1e3a5f;
+            background: #fff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.08);
+        }
+        .field-group input[readonly] {
+            background: #f8fafc;
+            border-color: #f1f5f9;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .field-groups-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 0 10px;
+        }
+
+        .ishikawa-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .ishikawa-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 1.25rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .ishikawa-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            border-color: #1e3a5f;
+        }
+        .ishikawa-item label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #1e3a5f;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+        .field-groups-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ishikawa-item textarea {
+            width: 100%;
+            border: none;
+            font-size: 0.85rem;
+            resize: none;
+            outline: none;
+            color: #475569;
+            min-height: 80px;
+            padding: 0;
+            background: transparent;
+        }
+        .ishikawa-item textarea::placeholder { color: #cbd5e1; }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            .piap-grid {
+                grid-template-columns: 1fr;
+            }
+            .w2h-grid, .ishikawa-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div class="logo-wrapper">
+            <div class="logo-box">PGR</div>
+            <div class="logo-text"><strong>PGR System</strong><span>Gestão de Rotina</span></div>
+        </div>
+        <div class="topbar-right">
+            <div class="user-badge" id="userBadge">Usuário</div>
+            <button class="nav-btn" onclick="logout()"><i class="ph-bold ph-sign-out"></i></button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="timer-card">
+            <div class="timer-main-group">
+                <button class="play-trigger" id="playBtn" onclick="toggleTimer()">
+                    <i class="ph-bold ph-play"></i>
+                </button>
+                <div class="timer-display">
+                    <span id="timerH">00</span>:<span id="timerM">00</span>:<span id="timerS">00</span>
+                </div>
+            </div>
+            <div class="time-inputs">
+                <div class="time-group">
+                    <label>Data Inicial</label>
+                    <input type="text" id="dtStart" placeholder="--:--:--" readonly>
+                </div>
+                <div class="time-group">
+                    <label>Data Final</label>
+                    <input type="text" id="dtEnd" placeholder="--:--:--" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-container">
+            <div class="tab-bar">
+                <div class="tab-item active" onclick="switchMainTab('abertura')"><i class="ph-bold ph-house"></i>
+                    Abertura</div>
+                <div class="tab-item" onclick="switchMainTab('seguranca')"><i class="ph-bold ph-shield-warning"></i>
+                    Segurança</div>
+                <div class="tab-item" onclick="switchMainTab('qualidade')"><i class="ph-bold ph-check-circle"></i>
+                    Qualidade</div>
+                <div class="tab-item" onclick="switchMainTab('producao')"><i class="ph-bold ph-factory"></i> Produção
+                </div>
+                <div class="tab-item" onclick="switchMainTab('manutencao')"><i class="ph-bold ph-wrench"></i> Manutenção
+                </div>
+                <div class="tab-item" onclick="switchMainTab('vendas')"><i class="ph-bold ph-chart-line-up"></i> Vendas
+                </div>
+                <div class="tab-item" onclick="switchMainTab('planos')"><i class="ph-bold ph-calendar-check"></i> Planos de Ação
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Abertura -->
+        <div id="tab-abertura" class="tab-pane">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-users"></i> Lista de Presença</h3>
+                    <button class="btn-primary" onclick="openModal('addPessoaModal')">+ Adicionar</button>
+                </div>
+                <div class="card-body">
+                    <div id="presencaList" class="presenca-list"></div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <div>✅ Presentes: <strong id="cntPresente">0</strong></div>
+                        <div>⏰ Atrasados: <strong id="cntAtrasado">0</strong></div>
+                        <div>⚠️ Ausentes Justificados: <strong id="cntAusenteJ">0</strong></div>
+                        <div>❌ Ausentes Injustificados: <strong id="cntAusenteIJ">0</strong></div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-chart-bar"></i> Indicadores Gerais</h3>
+                    <div class="period-filter" id="periodFilterAbertura">
+                        <button class="period-btn active" data-period="day">Dia</button>
+                        <button class="period-btn" data-period="week">Semana</button>
+                        <button class="period-btn" data-period="month">Mês</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="metricsAbertura" class="metrics-grid"></div>
+                </div>
+            </div>
+            <div class="glass-card outliers-section">
+                <div class="card-header outliers-header">
+                    <h3><i class="ph-bold ph-warning-circle"></i> Registros fora do padrão</h3>
+                    <button class="btn-primary" id="btnCriarPiapAbertura" onclick="openPiapFromTab('abertura')"
+                        style="display: none;">📝 Criar PIAP</button>
+                </div>
+                <div class="card-body">
+                    <div id="outliersAbertura" class="outliers-list"></div>
+                    <div id="noOutliersAbertura"
+                        style="text-align: center; color: #6b7280; padding: 1rem; display: none;">✅ Nenhum registro fora
+                        do padrão neste período.</div>
+                    <div id="piapListAbertura" class="piap-grid" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Segurança -->
+        <div id="tab-seguranca" class="tab-pane" style="display:none">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-shield-check"></i> Indicadores EHS</h3>
+                    <div class="period-filter" id="periodFilterSeguranca">
+                        <button class="period-btn active" data-period="day">Dia</button>
+                        <button class="period-btn" data-period="week">Semana</button>
+                        <button class="period-btn" data-period="month">Mês</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="metricsSeguranca" class="metrics-grid"></div>
+                </div>
+            </div>
+            <div class="glass-card outliers-section">
+                <div class="card-header outliers-header">
+                    <h3><i class="ph-bold ph-warning-circle"></i> Registros fora do padrão</h3>
+                    <button class="btn-primary" id="btnCriarPiapSeguranca" onclick="openPiapFromTab('seguranca')"
+                        style="display: none;">📝 Criar PIAP</button>
+                </div>
+                <div class="card-body">
+                    <div id="outliersSeguranca" class="outliers-list"></div>
+                    <div id="noOutliersSeguranca"
+                        style="text-align: center; color: #6b7280; padding: 1rem; display: none;">✅ Nenhum registro fora
+                        do padrão neste período.</div>
+                    <div id="piapListSeguranca" class="piap-grid" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Qualidade -->
+        <div id="tab-qualidade" class="tab-pane" style="display:none">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-flask"></i> Indicadores Qualidade</h3>
+                    <div class="period-filter" id="periodFilterQualidade">
+                        <button class="period-btn active" data-period="day">Dia</button>
+                        <button class="period-btn" data-period="week">Semana</button>
+                        <button class="period-btn" data-period="month">Mês</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="metricsQualidade" class="metrics-grid"></div>
+                </div>
+            </div>
+            <div class="glass-card outliers-section">
+                <div class="card-header outliers-header">
+                    <h3><i class="ph-bold ph-warning-circle"></i> Registros fora do padrão</h3>
+                    <button class="btn-primary" id="btnCriarPiapQualidade" onclick="openPiapFromTab('qualidade')"
+                        style="display: none;">📝 Criar PIAP</button>
+                </div>
+                <div class="card-body">
+                    <div id="outliersQualidade" class="outliers-list"></div>
+                    <div id="noOutliersQualidade"
+                        style="text-align: center; color: #6b7280; padding: 1rem; display: none;">✅ Nenhum registro fora
+                        do padrão neste período.</div>
+                    <div id="piapListQualidade" class="piap-grid" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Produção -->
+        <div id="tab-producao" class="tab-pane" style="display:none">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-factory"></i> Indicadores Produção</h3>
+                    <div class="period-filter" id="periodFilterProducao">
+                        <button class="period-btn active" data-period="day">Dia</button>
+                        <button class="period-btn" data-period="week">Semana</button>
+                        <button class="period-btn" data-period="month">Mês</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="section-title" style="margin-bottom: 1rem; border-bottom: 2px solid #1e3a5f; display: inline-block; padding-bottom: 4px;">TAMPAS</div>
+                    <div id="metricsProducaoTampas" class="metrics-grid" style="margin-bottom: 2rem;"></div>
+                    
+                    <div class="section-title" style="margin-bottom: 1rem; border-bottom: 2px solid #1e3a5f; display: inline-block; padding-bottom: 4px;">LATAS - LINHA 22</div>
+                    <div id="metricsProducaoL22" class="metrics-grid" style="margin-bottom: 2rem;"></div>
+
+                    <div class="section-title" style="margin-bottom: 1rem; border-bottom: 2px solid #1e3a5f; display: inline-block; padding-bottom: 4px;">LATAS - LINHA 23</div>
+                    <div id="metricsProducaoL23" class="metrics-grid"></div>
+                </div>
+            </div>
+            <div class="glass-card outliers-section">
+                <div class="card-header outliers-header">
+                    <h3><i class="ph-bold ph-warning-circle"></i> Registros fora do padrão</h3>
+                    <button class="btn-primary" id="btnCriarPiapProducao" onclick="openPiapFromTab('producao')"
+                        style="display: none;">📝 Criar PIAP</button>
+                </div>
+                <div class="card-body">
+                    <div id="outliersProducao" class="outliers-list"></div>
+                    <div id="noOutliersProducao"
+                        style="text-align: center; color: #6b7280; padding: 1rem; display: none;">✅ Nenhum registro fora
+                        do padrão neste período.</div>
+                    <div id="piapListProducao" class="piap-grid" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Manutenção -->
+        <div id="tab-manutencao" class="tab-pane" style="display:none">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-wrench"></i> Indicadores Manutenção</h3>
+                    <div class="period-filter" id="periodFilterManutencao">
+                        <button class="period-btn active" data-period="day">Dia</button>
+                        <button class="period-btn" data-period="week">Semana</button>
+                        <button class="period-btn" data-period="month">Mês</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="metricsManutencao" class="metrics-grid"></div>
+                </div>
+            </div>
+            <div class="glass-card outliers-section">
+                <div class="card-header outliers-header">
+                    <h3><i class="ph-bold ph-warning-circle"></i> Registros fora do padrão</h3>
+                    <button class="btn-primary" id="btnCriarPiapManutencao" onclick="openPiapFromTab('manutencao')"
+                        style="display: none;">📝 Criar PIAP</button>
+                </div>
+                <div class="card-body">
+                    <div id="outliersManutencao" class="outliers-list"></div>
+                    <div id="noOutliersManutencao"
+                        style="text-align: center; color: #6b7280; padding: 1rem; display: none;">✅ Nenhum registro fora
+                        do padrão neste período.</div>
+                    <div id="piapListManutencao" class="piap-grid" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Vendas -->
+        <div id="tab-vendas" class="tab-pane" style="display:none">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-chart-line-up"></i> Indicadores Vendas</h3>
+                    <div class="period-filter" id="periodFilterVendas">
+                        <button class="period-btn active" data-period="day">Dia</button>
+                        <button class="period-btn" data-period="week">Semana</button>
+                        <button class="period-btn" data-period="month">Mês</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="metricsVendas" class="metrics-grid"></div>
+                </div>
+            </div>
+            <div class="glass-card outliers-section">
+                <div class="card-header outliers-header">
+                    <h3><i class="ph-bold ph-warning-circle"></i> Indicadores fora da meta</h3>
+                    <button class="btn-primary" id="btnCriarPiapVendas" onclick="openPiapFromTab('vendas')"
+                        style="display: none;">📝 Criar PIAP</button>
+                </div>
+                <div class="card-body">
+                    <div id="outliersVendas" class="outliers-list"></div>
+                    <div id="noOutliersVendas"
+                        style="text-align: center; color: #6b7280; padding: 1rem; display: none;">✅ Nenhum registro fora
+                        do padrão neste período.</div>
+                    <div id="piapListVendas" class="piap-grid" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+            <!-- Seção de PIAPs Ativos -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-note-pencil"></i> PIAPs Pendentes</h3>
+                </div>
+                <div class="card-body">
+                    <div id="piapListGlobal" class="piap-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Planos de Ação -->
+        <div id="tab-planos" class="tab-pane" style="display:none">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3><i class="ph-bold ph-list-checks"></i> Console de Planos de Ação</h3>
+                    <button class="btn-primary" onclick="exportExcel()">⬇️ Exportar</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-container" style="overflow-x: auto;">
+                        <table class="action-table" style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #f8fafc; text-align: left;">
+                                    <th style="padding: 12px; border-bottom: 2px solid #e2e8f0;">ID</th>
+                                    <th style="padding: 12px; border-bottom: 2px solid #e2e8f0;">Descrição do Plano</th>
+                                    <th style="padding: 12px; border-bottom: 2px solid #e2e8f0;">Responsável</th>
+                                    <th style="padding: 12px; border-bottom: 2px solid #e2e8f0;">Prazo</th>
+                                    <th style="padding: 12px; border-bottom: 2px solid #e2e8f0;">Status</th>
+                                    <th style="padding: 12px; border-bottom: 2px solid #e2e8f0;">Origem (PIAP)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="planosTableBody">
+                                <!-- Preenchido dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detalhamento de Plano de Ação (5W2H + Ishikawa) -->
+    <div class="modal-overlay" id="actionDetailModal">
+        <div class="modal large">
+            <div class="modal-header">
+                <span class="modal-title" id="actionDetailTitle">Detalhamento da Ação</span>
+                <button class="modal-close" onclick="closeModal('actionDetailModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="detailActionId">
+                
+                <!-- 8D Progress Stepper -->
+                <div class="stepper">
+                    <div class="stepper-line"></div>
+                    <div class="step-item active" id="stepHeader1">
+                        <div class="step-circle">D1-2</div>
+                        <span class="step-label">Definição</span>
+                    </div>
+                    <div class="step-item" id="stepHeader2">
+                        <div class="step-circle">D3-4</div>
+                        <span class="step-label">Diagnóstico</span>
+                    </div>
+                    <div class="step-item" id="stepHeader3">
+                        <div class="step-circle">D5-6</div>
+                        <span class="step-label">Plano PCA</span>
+                    </div>
+                    <div class="step-item" id="stepHeader4">
+                        <div class="step-circle">D7-8</div>
+                        <span class="step-label">Prevenção</span>
+                    </div>
+                </div>
+
+                <!-- Stage 1 (D1-D2): Equipe e Problema -->
+                <div class="step-pane active" id="pane1">
+                    <div class="section-header-mini"><i class="ph-bold ph-users"></i> D1-D2: Formação de Equipe e Descrição</div>
+                    <div class="field-groups-stack">
+                        <div class="grid-2">
+                            <div class="field-group">
+                                <label>D1: Líder do Processo</label>
+                                <input type="text" id="w_who" readonly>
+                            </div>
+                            <div class="field-group">
+                                <label>Prazo Inicial</label>
+                                <input type="text" id="w_when" readonly>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <label>D2: What (Descrição do Problema)</label>
+                            <input type="text" id="w_what" readonly>
+                        </div>
+                        <div class="field-group">
+                            <label>D2: Where (Localização da Falha)</label>
+                            <input type="text" id="w_where" placeholder="Setor, Máquina ou Peça específica">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 2 (D3-D4): Contenção e Causa Raiz -->
+                <div class="step-pane" id="pane2">
+                    <div class="section-header-mini"><i class="ph-bold ph-shield-check"></i> D3-D4: Ação de Contenção e Causa Raiz</div>
+                    <div class="field-groups-stack">
+                        <div class="field-group">
+                            <label>D3: Ação de Contenção Imediata (Interim Containment)</label>
+                            <textarea id="8d_contencao" rows="2" placeholder="O que foi feito na hora para parar o vazamento/defeito?"></textarea>
+                        </div>
+                        <label style="font-size: 0.7rem; font-weight: 700; color: #1e3a5f; margin-top: 10px; display: block; text-transform: uppercase;">D4: Análise Causa Raiz (Ishikawa)</label>
+                        <div class="ishikawa-grid">
+                            <div class="ishikawa-item">
+                                <label><i class="ph-bold ph-users-three"></i> Pessoas</label>
+                                <textarea id="i_mao" placeholder="Treinamento?"></textarea>
+                            </div>
+                            <div class="ishikawa-item">
+                                <label><i class="ph-bold ph-engine"></i> Máquina</label>
+                                <textarea id="i_maq" placeholder="Manutenção?"></textarea>
+                            </div>
+                            <div class="ishikawa-item">
+                                <label><i class="ph-bold ph-package"></i> Material</label>
+                                <textarea id="i_mat" placeholder="Lote?"></textarea>
+                            </div>
+                            <div class="ishikawa-item">
+                                <label><i class="ph-bold ph-steps"></i> Método</label>
+                                <textarea id="i_met" placeholder="Padronização?"></textarea>
+                            </div>
+                            <div class="ishikawa-item">
+                                <label><i class="ph-bold ph-ruler"></i> Medida</label>
+                                <textarea id="i_med" placeholder="Calibração?"></textarea>
+                            </div>
+                            <div class="ishikawa-item">
+                                <label><i class="ph-bold ph-cloud-sun"></i> Ambiente</label>
+                                <textarea id="i_env" placeholder="Organização?"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 3 (D5-D6): PCA (Permanent Corrective Action) -->
+                <div class="step-pane" id="pane3">
+                    <div class="section-header-mini"><i class="ph-bold ph-wrench"></i> D5-D6: Escolha e Implementação da PCA</div>
+                    <div class="field-groups-stack">
+                        <div class="grid-2">
+                            <div class="field-group">
+                                <label>D5: Why (Justificativa)</label>
+                                <input type="text" id="w_why" placeholder="Por que esta solução resolve a raiz?">
+                            </div>
+                            <div class="field-group">
+                                <label>Recursos Estimados</label>
+                                <input type="text" id="w_how_much" placeholder="PE: R$ ou Horas">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <label>D6: How (Implementação Detalhada da PCA)</label>
+                            <textarea id="w_how" rows="4" placeholder="Passo a passo da mudança definitiva..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 4 (D7-D8): Prevenção e Reconhecimento -->
+                <div class="step-pane" id="pane4">
+                    <div class="section-header-mini"><i class="ph-bold ph-flag-checkered"></i> D7-D8: Prevenção de Recorrência e Reconhecimento</div>
+                    <div class="field-groups-stack">
+                        <div class="field-group">
+                            <label>D7: Ações Preventivas (Mudança de processo/norma)</label>
+                            <textarea id="8d_prevencao" rows="3" placeholder="Como garantir que NUNCA mais ocorra? (Treinamentos, Checklists, Mudança de Projeto)"></textarea>
+                        </div>
+                        <div class="field-group">
+                            <label>D8: Reconhecimento da Equipe e Conclusão</label>
+                            <textarea id="8d_conclusao" rows="2" placeholder="Lições aprendidas e validação da eficácia..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" id="btnPrevStep" onclick="changeModalStep(-1)" style="display: none;">Anterior</button>
+                <div style="flex: 1;"></div>
+                <button class="btn-primary" id="btnNextStep" onclick="changeModalStep(1)">Próximo Passo</button>
+                <button class="btn-primary" id="btnSaveDetail" onclick="saveActionDetail()" style="display: none; background: #10b981;">Finalizar Processo 8D</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Adicionar Pessoa -->
+    <div class="modal-overlay" id="addPessoaModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">Adicionar Participante</span>
+                <button class="modal-close" onclick="closeModal('addPessoaModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="field-group" style="margin-bottom: 1rem;">
+                    <label>Nome</label>
+                    <input type="text" id="newPersonName"
+                        style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
+                </div>
+                <div class="field-group">
+                    <label>Cargo</label>
+                    <input type="text" id="newPersonRole"
+                        style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeModal('addPessoaModal')">Cancelar</button>
+                <button class="btn-primary" onclick="addPessoa()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Inserir/Editar Valor -->
+    <div class="modal-overlay" id="valueModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="valueModalTitle">Inserir Valor</span>
+                <button class="modal-close" onclick="closeModal('valueModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="field-group" style="margin-bottom: 1rem;">
+                    <label>Valor</label>
+                    <input type="number" step="any" id="modalValue"
+                        style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeModal('valueModal')">Cancelar</button>
+                <button class="btn-primary" onclick="saveModalValue()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal PIAP -->
+    <div class="modal-overlay" id="piapModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="piapModalTitle">Criar PIAP</span>
+                <button class="modal-close" onclick="closeModal('piapModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="piapTabId">
+                <div id="piapSelectedItems"
+                    style="margin-bottom: 1rem; background: #f3f4f6; padding: 8px; border-radius: 8px; font-size: 0.8rem;">
+                </div>
+                <div class="field-group" style="margin-bottom: 1rem;">
+                    <label>Problema (P)</label>
+                    <textarea id="piapProblema" rows="3"
+                        style="width:100%; padding: 8px; border:1px solid #ccc; border-radius:6px;"></textarea>
+                </div>
+                <div class="field-group" style="margin-bottom: 1rem;">
+                    <label>Impacto (I)</label>
+                    <textarea id="piapImpacto" rows="3"
+                        style="width:100%; padding: 8px; border:1px solid #ccc; border-radius:6px;"></textarea>
+                </div>
+                <div class="field-group" style="margin-bottom: 1rem;">
+                    <label>Ações tomadas (A)</label>
+                    <textarea id="piapAcoes" rows="3"
+                        style="width:100%; padding: 8px; border:1px solid #ccc; border-radius:6px;"></textarea>
+                </div>
+                <div class="field-group" style="margin-bottom: 1rem;">
+                    <label>Próximos passos (P)</label>
+                    <textarea id="piapProximos" rows="3"
+                        style="width:100%; padding: 8px; border:1px solid #ccc; border-radius:6px;"></textarea>
+                </div>
+                <div class="field-group" style="margin-bottom: 1rem;">
+                    <label>Suporte necessário (S)</label>
+                    <textarea id="piapSuporte" rows="3"
+                        style="width:100%; padding: 8px; border:1px solid #ccc; border-radius:6px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline" onclick="closeModal('piapModal')">Cancelar</button>
+                <button class="btn-primary" onclick="savePiap()">Salvar PIAP</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== DADOS ====================
+        // ==================== CONFIG & STATE ====================
+        const API_URL = '';
+        let token = localStorage.getItem('pgr_token');
+
+        let meetingActive = false;
+        let timerInterval = null;
+        let timerSeconds = 0;
+        let currentMeetingId = null;
+
+        let pessoas = [
+            { id: 1, name: "João Silva", role: "Coordenador EHS", status: "presente" },
+            { id: 2, name: "Maria Santos", role: "Gerente Qualidade", status: "ausente-j" },
+            { id: 3, name: "Carlos Lima", role: "Supervisor Produção", status: "presente" },
+        ];
+
+        let indicators = [];
+        let piaps = [];
+        let acoes = [];
+        let valuesStore = {}; // key: `${metricId}_${dateStr}`, value: num
+
+        // Helper for API calls
+        async function api(path, method = 'GET', body = null) {
+            const options = {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            if (token) options.headers['Authorization'] = `Bearer ${token}`;
+            if (body) options.body = JSON.stringify(body);
+
+            const response = await fetch(`${API_URL}${path}`, options);
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('pgr_token');
+                window.location.href = '/login';
+                return;
+            }
+            if (!response.ok) {
+                const err = await response.json().catch(() => ({ detail: 'Erro desconhecido' }));
+                throw new Error(err.detail || 'API Error');
+            }
+            return response.json();
+        }
+
+        // Estrutura para armazenar os valores dos indicadores por data
+        // valuesStore será preenchida pelo backend
+
+        // Função auxiliar para obter limites (definidos pelo indicador)
+        function getLimits(indicator) {
+            const name = indicator.indicator;
+            if (name.includes('Spoilage')) return { min: 0, max: 3.5 };
+            if (name.includes('Eficiência')) return { min: 88, max: 100 };
+            if (name.includes('Acidentes') || name.includes('LTA') || name.includes('MTC')) return { min: 0, max: 0 };
+            if (name.includes('Quase acidentes') || name.includes('Primeiro socorros')) return { min: 0, max: 4 };
+            if (name.includes('Condições inseguras')) return { min: 0, max: 10 };
+            if (name.includes('Registros EcoOnline')) return { min: 0, max: 1000 };
+            if (name.includes('Reclamações')) return { min: 0, max: 5 };
+            if (name.includes('Estoque HFI')) return { min: 0, max: 1000 };
+            if (name.includes('Paradas')) return { min: 0, max: 5 };
+            if (name.includes('índice semanal')) return { min: 90, max: 100 };
+            if (name.includes('Carros carregados')) return { min: 10, max: 100 };
+            if (name.includes('Tempo médio')) return { min: 0, max: 120 };
+            if (name.includes('Capacidade em estoque')) return { min: 100, max: 2000 };
+            return { min: null, max: null };
+        }
+
+        // Gera a lista dos dias do MÊS ATUAL (01, 02, 03... até o fim do mês)
+        function getLast30Days() { // Mantendo o nome para não quebrar referências
+            const days = [];
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            // Primeiro dia do mês atual
+            const firstDay = new Date(year, month, 1);
+            // Último dia do mês atual
+            const lastDay = new Date(year, month + 1, 0).getDate();
+            for (let i = 1; i <= lastDay; i++) {
+                const date = new Date(year, month, i, 12, 0, 0);
+                const dateStr = date.toISOString().split('T')[0];
+                const isFuture = i > now.getDate();
+                days.push({
+                    day: i.toString().padStart(2, '0'),
+                    dateStr: dateStr,
+                    isFuture: isFuture
+                });
+            }
+            return days;
+        }
+        function getStoredValue(indicatorId, dateStr) {
+            const key = `${indicatorId}_${dateStr}`;
+            return valuesStore[key] !== undefined ? valuesStore[key] : null;
+        }
+        async function saveMetricValue(indicatorId, dateStr, value) {
+            try {
+                await api('/api/metrics/history/daily', 'POST', {
+                    metric_id: indicatorId,
+                    ref_date: dateStr + 'T12:00:00',
+                    value: parseFloat(value)
+                });
+
+                const key = `${indicatorId}_${dateStr}`;
+                valuesStore[key] = parseFloat(value);
+
+                const activeTabId = getActiveTabId();
+                loadIndicatorsForTab(activeTabId, getActivePeriod(activeTabId));
+                return true;
+            } catch (e) {
+                alert('Erro ao salvar: ' + e.message);
+                return false;
+            }
+        }
+
+        // Identifica a aba ativa
+        function getActiveTabId() {
+            const activeTab = document.querySelector('.tab-pane[style*="display: block"]');
+            if (!activeTab) return 'abertura';
+            return activeTab.id.replace('tab-', '');
+        }
+
+        function getActivePeriod(tabId) {
+            const filterDiv = document.getElementById(`periodFilter${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
+            if (filterDiv) {
+                const activeBtn = filterDiv.querySelector('.period-btn.active');
+                if (activeBtn) return activeBtn.getAttribute('data-period');
+            }
+            return 'day';
+        }
+
+        // Renderiza os indicadores de uma aba
+        function renderIndicators(tabId, period) {
+            let filtered = [];
+            if (tabId === 'seguranca') filtered = indicators.filter(i => i.area === 'EHS');
+            else if (tabId === 'qualidade') filtered = indicators.filter(i => i.area === 'Qualidade');
+            else if (tabId === 'producao') {
+                const tampas = indicators.filter(i => i.area === 'Produção' && i.subgroup === 'Tampas');
+                const l22 = indicators.filter(i => i.area === 'Produção' && i.subgroup === 'L22');
+                const l23 = indicators.filter(i => i.area === 'Produção' && i.subgroup === 'L23');
+                
+                renderIndicatorGrid(document.getElementById('metricsProducaoTampas'), tampas, period);
+                renderIndicatorGrid(document.getElementById('metricsProducaoL22'), l22, period);
+                renderIndicatorGrid(document.getElementById('metricsProducaoL23'), l23, period);
+                return;
+            }
+            else if (tabId === 'manutencao') filtered = indicators.filter(i => i.area === 'Manutenção');
+            else if (tabId === 'vendas') filtered = indicators.filter(i => i.area === 'Vendas');
+            else if (tabId === 'planos') {
+                renderPlanos();
+                return;
+            }
+            else filtered = indicators.slice(0, 6); // abertura
+
+            const container = document.getElementById(`metrics${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
+            if (!container) return;
+            renderIndicatorGrid(container, filtered, period);
+        }
+
+        function renderIndicatorGrid(container, list, period) {
+            if (!container) return;
+            container.innerHTML = '';
+            list.forEach((ind, idx) => {
+                const card = document.createElement('div');
+                card.className = 'metric-card';
+                const todayStr = new Date().toISOString().split('T')[0];
+                const currentVal = getStoredValue(ind.id, todayStr);
+                const displayVal = currentVal !== null ? currentVal : '—';
+                card.innerHTML = `
+                    <div class="metric-title">${ind.subgroup} - ${ind.indicator}</div>
+                    <div class="metric-value">${displayVal}<span class="metric-unit">${ind.unit}</span></div>
+                    <div class="metric-period">Período: ${period === 'day' ? 'Diário' : period === 'week' ? 'Semanal' : 'Mensal'}</div>
+                    <div class="date-squares" id="squares-${ind.id}-${idx}"></div>
+                `;
+                container.appendChild(card);
+                generateDateSquares(card.querySelector('.date-squares'), period, ind, ind.id);
+            });
+        }
+
+        // Gera os quadrados de datas para um indicador específico
+        function generateDateSquares(container, period, indicator, indicatorId) {
+            if (!container) return;
+            container.innerHTML = '';
+            const days = getLast30Days();
+
+            if (period === 'day') {
+                days.forEach(dayInfo => {
+                    const storedVal = getStoredValue(indicatorId, dayInfo.dateStr);
+                    const limits = getLimits(indicator);
+                    let colorClass = '';
+                    let isClickable = true;
+
+                    if (dayInfo.isFuture) {
+                        colorClass = 'future';
+                        isClickable = false;
+                    } else if (storedVal !== null) {
+                        const isOut = (limits.min !== null && storedVal < limits.min) || (limits.max !== null && storedVal > limits.max);
+                        colorClass = isOut ? 'red' : 'green';
+                    } else {
+                        colorClass = 'gray';
+                    }
+
+                    const square = document.createElement('div');
+                    square.className = `square ${colorClass}`;
+                    square.textContent = dayInfo.day;
+                    if (isClickable) {
+                        square.style.cursor = 'pointer';
+                        square.onclick = () => openValueModal(indicatorId, dayInfo.dateStr);
+                    } else {
+                        square.style.cursor = 'not-allowed';
+                    }
+                    container.appendChild(square);
+                });
+            } else if (period === 'week') {
+                // Agrupar por semana (simples: 7 dias)
+                const weeks = [];
+                for (let i = 0; i < days.length; i += 7) {
+                    const weekDays = days.slice(i, i + 7);
+                    const weekNumber = Math.floor(i / 7) + 1;
+                    // Verifica se algum dia da semana tem valor fora do limite
+                    let weekOut = false;
+                    let hasData = false;
+                    weekDays.forEach(d => {
+                        const val = getStoredValue(indicatorId, d.dateStr);
+                        if (val !== null) {
+                            hasData = true;
+                            const limits = getLimits(indicator);
+                            if ((limits.min !== null && val < limits.min) || (limits.max !== null && val > limits.max)) {
+                                weekOut = true;
+                            }
+                        }
+                    });
+                    const colorClass = !hasData ? 'gray' : (weekOut ? 'red' : 'green');
+                    const square = document.createElement('div');
+                    square.className = `square ${colorClass}`;
+                    square.textContent = weekNumber;
+                    // Para semanas, talvez queira abrir modal? Pode ser complexo. Aqui só exibe.
+                    square.style.cursor = 'default';
+                    container.appendChild(square);
+                }
+            } else if (period === 'month') {
+                // Agrupar por mês (só tem um mês corrente)
+                let hasData = false;
+                let monthOut = false;
+                days.forEach(d => {
+                    const val = getStoredValue(indicatorId, d.dateStr);
+                    if (val !== null) {
+                        hasData = true;
+                        const limits = getLimits(indicator);
+                        if ((limits.min !== null && val < limits.min) || (limits.max !== null && val > limits.max)) {
+                            monthOut = true;
+                        }
+                    }
+                });
+                const colorClass = !hasData ? 'gray' : (monthOut ? 'red' : 'green');
+                const square = document.createElement('div');
+                square.className = `square ${colorClass}`;
+                square.textContent = new Date().toLocaleString('pt-BR', { month: 'short' });
+                square.style.cursor = 'default';
+                container.appendChild(square);
+            }
+        }
+
+        // Abre modal para inserir/editar valor
+        let currentModalIndicatorId = null;
+        let currentModalDate = null;
+        function openValueModal(indicatorId, dateStr) {
+            const indicator = indicators.find(i => i.id === indicatorId);
+            if (!indicator) return;
+
+            currentModalIndicatorId = indicatorId;
+            currentModalDate = dateStr;
+            const stored = getStoredValue(indicatorId, dateStr);
+
+            document.getElementById('modalValue').value = stored !== null ? stored : '';
+            // Formatar data para exibição amigável (Brasileira)
+            const displayDate = dateStr.split('-').reverse().join('/');
+            document.getElementById('valueModalTitle').innerHTML = `${indicator.indicator} - ${displayDate}`;
+            openModal('valueModal');
+        }
+
+        async function saveModalValue() {
+            const value = parseFloat(document.getElementById('modalValue').value);
+            if (isNaN(value)) {
+                alert('Por favor, insira um valor numérico.');
+                return;
+            }
+            const ok = await saveMetricValue(currentModalIndicatorId, currentModalDate, value);
+            if (ok) closeModal('valueModal');
+        }
+
+        // ==================== PRESENÇA (mantida) ====================
+        function renderPresenca() {
+            const container = document.getElementById('presencaList');
+            if (!container) return;
+            container.innerHTML = '';
+            let presentes = 0, ausentesJ = 0, ausentesIJ = 0, atrasados = 0;
+            pessoas.forEach(p => {
+                const row = document.createElement('div');
+                row.className = 'presenca-row';
+                row.innerHTML = `
+                    <div class="presenca-avatar">${p.name[0]}</div>
+                    <div class="presenca-name">${p.name}<br><small>${p.role || ''}</small></div>
+                    <select class="presenca-select" data-id="${p.id}" onchange="updatePresenca(${p.id}, this.value)">
+                        <option value="presente" ${p.status === 'presente' ? 'selected' : ''}>Presente</option>
+                        <option value="atrasado" ${p.status === 'atrasado' ? 'selected' : ''}>Atrasado</option>
+                        <option value="ausente-j" ${p.status === 'ausente-j' ? 'selected' : ''}>Ausente Justificado</option>
+                        <option value="ausente-ij" ${p.status === 'ausente-ij' ? 'selected' : ''}>Ausente Injustificado</option>
+                    </select>
+                `;
+                container.appendChild(row);
+                if (p.status === 'presente') presentes++;
+                else if (p.status === 'atrasado') atrasados++;
+                else if (p.status === 'ausente-j') ausentesJ++;
+                else if (p.status === 'ausente-ij') ausentesIJ++;
+            });
+            document.getElementById('cntPresente').innerText = presentes;
+            document.getElementById('cntAtrasado').innerText = atrasados;
+            document.getElementById('cntAusenteJ').innerText = ausentesJ;
+            document.getElementById('cntAusenteIJ').innerText = ausentesIJ;
+        }
+
+        async function updatePresenca(id, status) {
+            try {
+                await api(`/api/presenca/${id}`, 'PUT', { status });
+                const p = pessoas.find(x => x.id === id);
+                if (p) p.status = status;
+                renderPresenca();
+            } catch (e) {
+                alert('Erro ao atualizar presença: ' + e.message);
+            }
+        }
+
+        async function addPessoa() {
+            const name = document.getElementById('newPersonName').value.trim();
+            const role = document.getElementById('newPersonRole').value.trim();
+            if (!name) return alert('Informe o nome');
+            try {
+                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+                await api('/api/presenca', 'POST', { name, role, status: 'presente', initials });
+                await fetchInitialData();
+                closeModal('addPessoaModal');
+            } catch (e) {
+                alert('Erro ao adicionar: ' + e.message);
+            }
+        }
+
+        // ==================== TIMER ====================
+        async function toggleTimer() {
+            try {
+                const res = await api('/api/meeting/toggle', 'POST');
+                meetingActive = res.active;
+                currentMeetingId = res.id || currentMeetingId;
+
+                if (meetingActive) {
+                    startTimerUI(res.start_time);
+                } else {
+                    stopTimerUI(res.end_time);
+                    alert(`Reunião finalizada. Duração: ${Math.round(res.duration)} min`);
+                }
+                await fetchInitialData();
+            } catch (e) {
+                alert('Erro ao alternar reunião: ' + e.message);
+            }
+        }
+
+        function startTimerUI(startTimeStr = null) {
+            if (timerInterval) clearInterval(timerInterval);
+
+            if (startTimeStr) {
+                const start = new Date(startTimeStr);
+                timerSeconds = Math.max(0, Math.floor((new Date() - start) / 1000));
+                document.getElementById('dtStart').value = start.toLocaleTimeString('pt-BR');
+            } else {
+                const now = new Date();
+                document.getElementById('dtStart').value = now.toLocaleTimeString('pt-BR');
+            }
+            document.getElementById('dtEnd').value = '--:--:--';
+
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                const h = Math.floor(timerSeconds / 3600);
+                const m = Math.floor((timerSeconds % 3600) / 60);
+                const s = timerSeconds % 60;
+                document.getElementById('timerH').innerText = h.toString().padStart(2, '0');
+                document.getElementById('timerM').innerText = m.toString().padStart(2, '0');
+                document.getElementById('timerS').innerText = s.toString().padStart(2, '0');
+            }, 1000);
+            document.getElementById('playBtn').innerHTML = '<i class="ph-bold ph-stop"></i>';
+        }
+
+        function stopTimerUI(endTimeStr = null) {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById('playBtn').innerHTML = '<i class="ph-bold ph-play"></i>';
+            const end = endTimeStr ? new Date(endTimeStr) : new Date();
+            document.getElementById('dtEnd').value = end.toLocaleTimeString('pt-BR');
+        }
+
+        // ==================== TABS E FILTROS ====================
+        function switchMainTab(tabId) {
+            // Hide all panes
+            const panes = document.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.style.display = 'none');
+
+            // Show target pane
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) target.style.display = 'block';
+
+            // Active button class
+            const tabItems = document.querySelectorAll('.tab-item');
+            tabItems.forEach(item => item.classList.remove('active'));
+
+            // Find by a safer way (data attribute or child icon class can be problematic, so we use a map)
+            const tabMap = {
+                'abertura': 0, 'seguranca': 1, 'qualidade': 2,
+                'producao': 3, 'manutencao': 4, 'vendas': 5, 'planos': 6
+            };
+            const index = tabMap[tabId];
+            if (tabItems[index]) tabItems[index].classList.add('active');
+
+            const tabNameUC = tabId.charAt(0).toUpperCase() + tabId.slice(1);
+            const filterDiv = document.getElementById(`periodFilter${tabNameUC}`);
+            const activePeriod = filterDiv ? filterDiv.querySelector('.period-btn.active').getAttribute('data-period') : 'day';
+
+            loadIndicatorsForTab(tabId, activePeriod);
+        }
+
+        function loadIndicatorsForTab(tabId, period) {
+            renderIndicators(tabId, period);
+            renderOutliers(tabId, period);
+        }
+
+        // ==================== RENDERING NOVOS COMPONENTES ====================
+        function renderPiaps() {
+            const tabs = ['Abertura', 'Seguranca', 'Qualidade', 'Producao', 'Manutencao', 'Vendas'];
+            const containers = {};
+            tabs.forEach(t => {
+                const el = document.getElementById(`piapList${t}`);
+                if (el) {
+                    el.innerHTML = '';
+                    containers[t] = el;
+                }
+            });
+
+            const globalContainer = document.getElementById('piapListGlobal');
+            if (globalContainer) globalContainer.innerHTML = '';
+
+            const openPiaps = piaps.filter(p => p.status === 'open');
+
+            if (openPiaps.length === 0) {
+                tabs.forEach(t => {
+                    if (containers[t]) containers[t].innerHTML = '';
+                });
+                if (globalContainer) globalContainer.innerHTML = '<div style="color: #6b7280; font-size: 0.9rem;">Nenhum PIAP pendente no momento.</div>';
+                return;
+            }
+
+            openPiaps.forEach(p => {
+                // Determinar para qual aba este PIAP vai baseado nos outliers
+                let targetTab = 'Vendas'; // Default
+                if (p.outliers && p.outliers.length > 0) {
+                    const firstOut = p.outliers[0];
+                    const indicator = indicators.find(i => i.indicator === firstOut.indicator);
+                    if (indicator) {
+                        const areaMap = {
+                            'EHS': 'Seguranca',
+                            'Qualidade': 'Qualidade',
+                            'Produção': 'Producao',
+                            'Manutenção': 'Manutencao',
+                            'Vendas': 'Vendas'
+                        };
+                        targetTab = areaMap[indicator.area] || 'Abertura';
+                    }
+                }
+
+                const card = document.createElement('div');
+                card.className = 'piap-card';
+                card.style.borderLeft = '6px solid #ef4444'; // Red for open PIAPs in tabs
+                card.innerHTML = `
+                    <div class="piap-card-header">
+                        <div class="piap-card-title">${p.title}</div>
+                        <span class="piap-badge" style="background: #fee2e2; color: #ef4444;">Pendente</span>
+                    </div>
+                    <div class="piap-card-body">
+                        <p><strong>Problema:</strong> ${p.problema}</p>
+                        <p><strong>Ações Tomadas:</strong> ${p.acoes_tomadas}</p>
+                        <p><strong>Responsável:</strong> ${p.resp || 'Não definido'}</p>
+                    </div>
+                    <div class="piap-actions">
+                        <button class="btn-primary" style="background: #10b981; font-size: 0.75rem;" onclick="closePiapAction(${p.id})">Encerrar</button>
+                        <button class="btn-primary" style="font-size: 0.75rem;" onclick="migratePiapAction(${p.id})">Ir para Plano Ação</button>
+                    </div>
+                `;
+                
+                if (containers[targetTab]) {
+                    containers[targetTab].appendChild(card);
+                }
+                
+                // Also add to global if it exists
+                if (globalContainer) {
+                    globalContainer.appendChild(card.cloneNode(true));
+                }
+            });
+        }
+
+        function renderPlanos() {
+            const container = document.getElementById('planosTableBody');
+            if (!container) return;
+            container.innerHTML = '';
+
+            // Planos de ação são as ações que vieram de PIAPs
+            const planos = acoes.filter(a => a.piap_id !== null);
+
+            // Ordenação por 'atraso' (prazo mais antigo primeiro)
+            planos.sort((a, b) => {
+                const da = new Date(a.prazo || 0);
+                const db = new Date(b.prazo || 0);
+                return da - db;
+            });
+
+            if (planos.length === 0) {
+                container.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #6b7280;">Nenhum item migrado para Plano de Ação ainda.</td></tr>`;
+                return;
+            }
+
+            planos.forEach(a => {
+                const tr = document.createElement('tr');
+                tr.style.cursor = 'pointer';
+                tr.onclick = () => openActionDetail(a.id);
+                tr.innerHTML = `
+                    <td style="padding: 12px; border-bottom: 1px solid #f1f5f9;">#${a.id}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #f1f5f9; font-weight: 500;">${a.desc}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #f1f5f9;">${a.resp || '—'}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #f1f5f9;">${a.prazo ? new Date(a.prazo).toLocaleDateString('pt-BR') : '—'}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #f1f5f9;"><span class="status-badge ${a.status}">${a.status.toUpperCase()}</span></td>
+                    <td style="padding: 12px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 0.8rem;">PIAP #${a.piap_id}</td>
+                `;
+                container.appendChild(tr);
+            });
+        }
+
+        // ==================== ACTION DETAIL STEPPER LOGIC ====================
+        let currentModalStep = 1;
+
+        function openActionDetail(id) {
+            const action = acoes.find(a => a.id === id);
+            if (!action) return;
+
+            currentModalStep = 1;
+            updateModalSteps();
+
+            document.getElementById('detailActionId').value = id;
+            document.getElementById('actionDetailTitle').innerText = `Evolução do Plano #${id}`;
+            
+            // Populate fields
+            document.getElementById('w_what').value = action.desc || '';
+            document.getElementById('w_who').value = action.resp || '';
+            document.getElementById('w_when').value = action.prazo ? new Date(action.prazo).toLocaleDateString('pt-BR') : '';
+            document.getElementById('w_why').value = action.why || '';
+            document.getElementById('w_where').value = action.where || '';
+            document.getElementById('w_how').value = action.how || '';
+            document.getElementById('w_how_much').value = action.how_much || '';
+            document.getElementById('8d_contencao').value = action.contencao || '';
+            document.getElementById('8d_prevencao').value = action.prevencao || '';
+            document.getElementById('8d_conclusao').value = action.conclusao || '';
+
+            document.getElementById('i_mao').value = action.ishikawa_mao_de_obra || '';
+            document.getElementById('i_maq').value = action.ishikawa_maquina || '';
+            document.getElementById('i_mat').value = action.ishikawa_material || '';
+            document.getElementById('i_met').value = action.ishikawa_metodo || '';
+            document.getElementById('i_med').value = action.ishikawa_medida || '';
+            document.getElementById('i_env').value = action.ishikawa_meio_ambiente || '';
+
+            openModal('actionDetailModal');
+        }
+
+        function changeModalStep(offset) {
+            const nextStep = currentModalStep + offset;
+            
+            // VALIDAÇÃO 8D POR ESTÁGIO
+            if (offset > 0) {
+                if (currentModalStep === 1) {
+                    if (!document.getElementById('w_where').value.trim()) {
+                        alert('ERRO D2: Localização da falha é obrigatória.');
+                        return;
+                    }
+                } else if (currentModalStep === 2) {
+                    const cont = document.getElementById('8d_contencao').value.trim();
+                    const iFields = ['i_mao', 'i_maq', 'i_mat', 'i_met', 'i_med', 'i_env'];
+                    const hasCause = iFields.some(id => document.getElementById(id).value.trim() !== '');
+                    if (!cont) { alert('ERRO D3: Defina a ação de contenção imediata.'); return; }
+                    if (!hasCause) { alert('ERRO D4: Realize a análise de causa raiz no Ishikawa.'); return; }
+                } else if (currentModalStep === 3) {
+                    if (!document.getElementById('w_why').value.trim() || !document.getElementById('w_how').value.trim()) {
+                        alert('ERRO D5-6: Ação Corretiva Permanente (PCA) deve ser detalhada.');
+                        return;
+                    }
+                }
+            }
+
+            if (nextStep >= 1 && nextStep <= 4) {
+                currentModalStep = nextStep;
+                updateModalSteps();
+            }
+        }
+
+        function updateModalSteps() {
+            // Header circles
+            for (let i = 1; i <= 4; i++) {
+                const header = document.getElementById(`stepHeader${i}`);
+                if (header) {
+                    header.className = 'step-item';
+                    if (i === currentModalStep) header.classList.add('active');
+                    if (i < currentModalStep) header.classList.add('completed');
+                }
+
+                // Panes
+                const pane = document.getElementById(`pane${i}`);
+                if (pane) pane.classList.toggle('active', i === currentModalStep);
+            }
+
+            // Buttons visibility
+            document.getElementById('btnPrevStep').style.display = currentModalStep === 1 ? 'none' : 'block';
+            document.getElementById('btnNextStep').style.display = currentModalStep === 4 ? 'none' : 'block';
+            document.getElementById('btnSaveDetail').style.display = currentModalStep === 4 ? 'block' : 'none';
+        }
+
+        async function saveActionDetail() {
+            // Final validation step 4
+            if (!document.getElementById('8d_prevencao').value.trim()) {
+                alert('ERRO D7: Defina como prevenir a recorrência futuramente.');
+                return;
+            }
+
+            const id = document.getElementById('detailActionId').value;
+            const payload = {
+                why: document.getElementById('w_why').value,
+                where: document.getElementById('w_where').value,
+                how: document.getElementById('w_how').value,
+                how_much: document.getElementById('w_how_much').value,
+                contencao: document.getElementById('8d_contencao').value,
+                prevencao: document.getElementById('8d_prevencao').value,
+                conclusao: document.getElementById('8d_conclusao').value,
+                ishikawa_mao_de_obra: document.getElementById('i_mao').value,
+                ishikawa_maquina: document.getElementById('i_maq').value,
+                ishikawa_material: document.getElementById('i_mat').value,
+                ishikawa_metodo: document.getElementById('i_met').value,
+                ishikawa_medida: document.getElementById('i_med').value,
+                ishikawa_meio_ambiente: document.getElementById('i_env').value
+            };
+
+            try {
+                await api(`/api/acao/${id}`, 'PUT', payload);
+                alert('Evolução do Plano salva com sucesso! A organização deu um passo à frente.');
+                closeModal('actionDetailModal');
+                await fetchInitialData();
+            } catch (e) {
+                alert('Erro ao salvar evolução: ' + e.message);
+            }
+        }
+
+        async function closePiapAction(id) {
+            if (!confirm('Deseja encerrar este PIAP?')) return;
+            try {
+                await api(`/api/piap/${id}/close`, 'POST');
+                alert('PIAP encerrado com sucesso!');
+                await fetchInitialData();
+            } catch (e) {
+                alert('Erro: ' + e.message);
+            }
+        }
+
+        async function migratePiapAction(id) {
+            if (!confirm('Enviar este PIAP para a aba Planos de Ação?')) return;
+            try {
+                await api(`/api/piap/${id}/migrate`, 'POST');
+                alert('PIAP migrado para o Console de Planos de Ação!');
+                await fetchInitialData();
+            } catch (e) {
+                alert('Erro: ' + e.message);
+            }
+        }
+
+        function attachPeriodFilters() {
+            const tabs = ['abertura', 'seguranca', 'qualidade', 'producao', 'manutencao', 'vendas', 'planos'];
+            tabs.forEach(tab => {
+                const filterDiv = document.getElementById(`periodFilter${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+                if (filterDiv) {
+                    filterDiv.querySelectorAll('.period-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            filterDiv.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            const period = btn.getAttribute('data-period');
+                            loadIndicatorsForTab(tab, period);
+                        });
+                    });
+                }
+            });
+        }
+
+        // ==================== OUTLIERS ====================
+        function renderOutliers(tabId, period) {
+            let filteredIndices = [];
+            if (tabId === 'seguranca') filteredIndices = indicators.map((i, idx) => i.area === 'EHS' ? idx : -1).filter(i => i !== -1);
+            else if (tabId === 'qualidade') filteredIndices = indicators.map((i, idx) => i.area === 'Qualidade' ? idx : -1).filter(i => i !== -1);
+            else if (tabId === 'producao') filteredIndices = indicators.map((i, idx) => i.area === 'Produção' ? idx : -1).filter(i => i !== -1);
+            else if (tabId === 'manutencao') filteredIndices = indicators.map((i, idx) => i.area === 'Manutenção' ? idx : -1).filter(i => i !== -1);
+            else if (tabId === 'vendas') filteredIndices = indicators.map((i, idx) => i.area === 'Vendas' ? idx : -1).filter(i => i !== -1);
+            else filteredIndices = indicators.slice(0, 6).map((_, idx) => idx); // abertura
+
+            const outliersList = [];
+            const days = getLast30Days();
+            filteredIndices.forEach(idx => {
+                const indicator = indicators[idx];
+                const limits = getLimits(indicator);
+                days.forEach(dayInfo => {
+                    const val = getStoredValue(indicator.id, dayInfo.dateStr);
+                    if (val !== null && !dayInfo.isFuture) {
+                        const isOut = (limits.min !== null && val < limits.min) || (limits.max !== null && val > limits.max);
+                        if (isOut) {
+                            outliersList.push({
+                                indicator: indicator.indicator,
+                                date: dayInfo.dateStr,
+                                value: val,
+                                min: limits.min,
+                                max: limits.max,
+                                unit: indicator.unit,
+                                indicator_id: indicator.id
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Filtrar por período (day, week, month)
+            const today = new Date();
+            let filteredOutliers = outliersList;
+            if (period === 'week') {
+                filteredOutliers = outliersList.filter(o => {
+                    const d = new Date(o.date);
+                    const diffDays = (today - d) / (1000 * 3600 * 24);
+                    return diffDays <= 84; // 12 semanas
+                });
+            } else if (period === 'month') {
+                filteredOutliers = outliersList.filter(o => {
+                    const d = new Date(o.date);
+                    const diffMonths = (today.getFullYear() - d.getFullYear()) * 12 + (today.getMonth() - d.getMonth());
+                    return diffMonths <= 12;
+                });
+            }
+
+            const container = document.getElementById(`outliers${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
+            const noOutMsg = document.getElementById(`noOutliers${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
+            const createBtn = document.getElementById(`btnCriarPiap${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
+
+            if (!container) return;
+
+            if (filteredOutliers.length === 0) {
+                container.innerHTML = '';
+                if (noOutMsg) noOutMsg.style.display = 'block';
+                if (createBtn) createBtn.style.display = 'none';
+                return;
+            }
+
+            if (noOutMsg) noOutMsg.style.display = 'none';
+            if (createBtn) createBtn.style.display = 'block';
+
+            container.innerHTML = '';
+            filteredOutliers.forEach((out, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'outlier-item';
+                itemDiv.innerHTML = `
+                    <input type="checkbox" class="outlier-check" data-indicator="${out.indicator}" data-date="${out.date}" data-value="${out.value}" data-min="${out.min}" data-max="${out.max}">
+                    <div class="outlier-info">
+                        <div class="outlier-date">${new Date(out.date).toLocaleDateString('pt-BR')}</div>
+                        <div class="outlier-value">Valor: ${out.value} ${out.unit}</div>
+                        <div class="outlier-range">Limite: ${out.min !== null ? out.min : '—'} – ${out.max !== null ? out.max : '—'} ${out.unit}</div>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        // ==================== PIAP ====================
+        let currentSelectedOutliers = [];
+
+        function openPiapFromTab(tabId) {
+            const container = document.getElementById(`outliers${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
+            if (!container) return;
+            const checkboxes = container.querySelectorAll('.outlier-check:checked');
+            if (checkboxes.length === 0) {
+                alert('Selecione pelo menos um registro fora do padrão.');
+                return;
+            }
+            currentSelectedOutliers = [];
+            const summaryDiv = document.getElementById('piapSelectedItems');
+            summaryDiv.innerHTML = '';
+            checkboxes.forEach(cb => {
+                const data = {
+                    indicator: cb.getAttribute('data-indicator'),
+                    date: cb.getAttribute('data-date'),
+                    value: cb.getAttribute('data-value'),
+                    min: cb.getAttribute('data-min'),
+                    max: cb.getAttribute('data-max')
+                };
+                currentSelectedOutliers.push(data);
+                summaryDiv.innerHTML += `<div>📅 ${new Date(data.date).toLocaleDateString('pt-BR')} - ${data.indicator}: ${data.value} (fora do limite)</div>`;
+            });
+            document.getElementById('piapTabId').value = tabId;
+            openModal('piapModal');
+        }
+
+        async function savePiap() {
+            const payload = {
+                title: 'PIAP - ' + (currentSelectedOutliers[0]?.indicator || 'Geral'),
+                problema: document.getElementById('piapProblema').value.trim(),
+                impacto: document.getElementById('piapImpacto').value.trim(),
+                acoes_tomadas: document.getElementById('piapAcoes').value.trim(),
+                proximos_passos: document.getElementById('piapProximos').value.trim(),
+                suporte: document.getElementById('piapSuporte').value.trim(),
+                outliers: currentSelectedOutliers
+            };
+
+            if (!payload.problema || !payload.acoes_tomadas) return alert('Preencha o PIAP.');
+
+            try {
+                await api('/api/piap', 'POST', payload);
+                closeModal('piapModal');
+                alert('PIAP criado com sucesso!');
+                ['piapProblema', 'piapImpacto', 'piapAcoes', 'piapProximos', 'piapSuporte'].forEach(id => document.getElementById(id).value = '');
+                currentSelectedOutliers = [];
+                const tabId = getActiveTabId();
+                await fetchInitialData();
+            } catch (e) {
+                alert('Erro ao salvar PIAP: ' + e.message);
+            }
+        }
+
+        // ==================== CORE ====================
+        async function fetchInitialData() {
+            try {
+                const data = await api('/api/dashboard');
+                if (data.metrics) indicators = data.metrics;
+                if (data.presenca) pessoas = data.presenca;
+                if (data.piaps) piaps = data.piaps;
+                if (data.acoes) acoes = data.acoes;
+
+                // Mapear histórico para valuesStore
+                if (data.metric_history) {
+                    for (let mid in data.metric_history) {
+                        const history = data.metric_history[mid];
+                        if (history.ref_dates) {
+                            history.ref_dates.forEach((d, idx) => {
+                                const dateStr = d.split('T')[0];
+                                valuesStore[`${mid}_${dateStr}`] = history.values[idx];
+                            });
+                        }
+                    }
+                }
+
+                if (data.meeting && data.meeting.date_start && !data.meeting.date_end) {
+                    meetingActive = true;
+                    startTimerUI(data.meeting.date_start);
+                } else {
+                    meetingActive = false;
+                    stopTimerUI(data.meeting ? data.meeting.date_end : null);
+                    if (data.meeting && data.meeting.date_start) {
+                        document.getElementById('dtStart').value = new Date(data.meeting.date_start).toLocaleTimeString('pt-BR');
+                        if (data.meeting.date_end) {
+                           document.getElementById('dtEnd').value = new Date(data.meeting.date_end).toLocaleTimeString('pt-BR');
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('API Sync failed, using local/saved data', e);
+            } finally {
+                renderPresenca();
+                renderPiaps();
+                initTabs();
+            }
+        }
+
+        function initTabs() {
+            const tabs = ['abertura', 'seguranca', 'qualidade', 'producao', 'manutencao', 'vendas', 'planos'];
+            tabs.forEach(t => {
+                loadIndicatorsForTab(t, 'day');
+            });
+        }
+
+        function logout() { localStorage.removeItem('pgr_token'); location.reload(); }
+
+        // Inicialização única
+        window.onload = async () => {
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            renderPresenca();
+            initTabs();
+            attachPeriodFilters();
+            await fetchInitialData();
+        };
+
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    </script>
+</body>
+
+</html>

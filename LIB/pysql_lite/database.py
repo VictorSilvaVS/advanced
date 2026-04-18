@@ -8,8 +8,6 @@ import os
 from typing import Any, Dict, List, Optional, Type, TypeVar
 from datetime import datetime
 from enum import Enum
-
-# Type variable para uso genérico
 T = TypeVar('T', bound='Model')
 
 
