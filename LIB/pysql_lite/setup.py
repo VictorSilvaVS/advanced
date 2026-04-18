@@ -11,7 +11,7 @@ setup(
     name="pysql_lite",
     version="1.0.0",
     author="Victor Silva",
-    author_email="victor@example.com",
+    author_email="victorsilva139br@gmail.com",
     description="Mini-ORM leve para SQLite sem SQL complexo",
     long_description=long_description,
     long_description_content_type="text/markdown",

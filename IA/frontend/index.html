@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PriceAI - Inteligência em Preços</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="dark-mode">
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <i data-lucide="zap" class="logo-icon"></i>
+            <span>PriceAI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Recursos</a>
+            <a href="#analyze" class="btn-primary">Analisar Agora</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1 class="fade-in">Economize com <span class="gradient-text">Inteligência Artificial</span></h1>
+            <p class="fade-in delay-1">Análise profissional de preços para qualquer item. Tome decisões de compra baseadas em dados, não em impulsos.</p>
+            <div class="hero-actions fade-in delay-2">
+                <a href="#analyze" class="btn-main">Começar Análise</a>
+                <a href="#" class="btn-secondary">Ver Demonstração</a>
+            </div>
+        </section>
+
+        <section id="analyze" class="analysis-section fade-in delay-3">
+            <div class="glass-container">
+                <div class="card-header">
+                    <h2>Nova Análise</h2>
+                    <p>Insira os itens e preços para comparar</p>
+                </div>
+                
+                <div class="input-group">
+                    <label for="query">O que você está procurando?</label>
+                    <input type="text" id="query" placeholder="Ex: Melhor Smartphone Gamer 2024">
+                </div>
+
+                <div id="items-list" class="items-list">
+                    <!-- Dynamic items here -->
+                </div>
+
+                <button id="add-item-btn" class="btn-outline">
+                    <i data-lucide="plus"></i> Adicionar Item
+                </button>
+
+                <div class="action-footer">
+                    <button id="submit-analysis" class="btn-primary-large">
+                        <i data-lucide="brain-circuit"></i> Analisar com IA
+                    </button>
+                </div>
+            </div>
+
+            <div id="result-container" class="glass-container hidden result-card">
+                <div class="card-header">
+                    <h2>Resultado da Análise</h2>
+                    <span id="confidence-badge" class="badge">98% Confiança</span>
+                </div>
+                
+                <div class="result-content">
+                    <div class="result-block">
+                        <h3><i data-lucide="info"></i> Resumo</h3>
+                        <p id="res-summary"></p>
+                    </div>
+                    
+                    <div class="result-grid">
+                        <div class="result-block highlight">
+                            <h3><i data-lucide="award"></i> Melhor Escolha</h3>
+                            <p id="res-best-item" class="highlight-text"></p>
+                        </div>
+                        <div class="result-block">
+                            <h3><i data-lucide="trending-down"></i> Economia Estimada</h3>
+                            <p id="res-savings"></p>
+                        </div>
+                    </div>
+
+                    <div class="result-block">
+                        <h3><i data-lucide="check-circle"></i> Recomendação</h3>
+                        <p id="res-recommendation"></p>
+                    </div>
+                </div>
+                
+                <button id="reset-btn" class="btn-secondary">Nova Consulta</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 PriceAI - Segurança Máxima & Inteligência de Elite</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
